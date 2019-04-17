@@ -5,8 +5,29 @@ import (
 	"strings"
 )
 
-// hello: world, goodbye: moon
-// .hello: world, .goodbye: moon
+// Flatten a subject, usually a map[string]interface{}, into a map containing
+// keys for every keypath. This is probably terribly inperformant for large,
+// highly nested maps.
+//
+// This is most easily understood with an example. Suppose we have the map:
+//
+//   hello: world
+//   goodbye: moon
+//   banana:
+//     phone: ring
+//     ding: ding
+//
+// Flatten will flatten this into the following:
+//
+//   .hello: world
+//   .goodbye: moon
+//   .banana:
+//      phone: ring
+//      ding: ding
+//   .banana.phone: ring
+//   .banana.ding: ding
+//
+// Thus, creating a map where any value can be found via its keypath.
 func Flatten(subject interface{}) map[string]interface{} {
 	out := map[string]interface{}{}
 
